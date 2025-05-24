@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moodboard Archivi Digitali Interattivi: Palette e Icone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette & Fonts:
+        Default Page Theme (on load): Light Gray BG (#F8F9FA), Dark Gray Text (#212529). Accents: Infiniti Mondi Orange & Blue.
+        Dynamic Page Theme (on studio click): ENTIRE page (Background, Text, Accents) changes. Studio cards and Icon cards also adopt the page's dynamic BG and Text colors.
+        Font: Montserrat (with interactive bold/italic toggle buttons).
+        Themed Section Cards: Background and border REMOVED. Content text color adapts.
+        Project Icon Cards: Background, text, and border colors now fully adapt to the dynamic page theme.
+        Studio Image Paths: Ensured to use underscores as per user's last provided files.
+        Application Structure Plan: Interactive moodboard. Studio cards detail simplified ThingLink color usage.
+        Visualization & Content Choices: Text, color swatches, font examples, dynamic CSS variables.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        :root {
+            /* These will be dynamically updated by JavaScript */
+            --dynamic-page-bg-color: #F8F9FA; 
+            --dynamic-page-text-color: #212529; 
+            
+            --dynamic-page-accent-1: #F75C03; 
+            --dynamic-page-accent-2: #009CDF; 
+            --dynamic-text-on-accent-1: #FFFFFF; 
+            --dynamic-text-on-accent-2: #FFFFFF; 
+            --dynamic-page-accent-1-transparent: rgba(247,92,3,0.3); 
+
+            --dynamic-page-text-color-rgb: 33,37,41; 
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dynamic-page-bg-color);
+            color: var(--dynamic-page-text-color);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .font-bebas { 
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        .themed-section-card {
+            border: none; 
+            background-color: transparent;
+            color: var(--dynamic-page-text-color); 
+            transition: color 0.5s ease; 
+            padding: 1.5rem; 
+            border-radius: 1.5rem; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.03), 0 8px 10px -6px rgba(0,0,0,0.03);
+        }
+        @media (min-width: 640px) {
+            .themed-section-card {
+                padding: 2rem; 
+            }
+        }
+        .themed-section-card .section-title {
+            color: var(--dynamic-page-accent-1); 
+            transition: color 0.5s ease;
+        }
+        .themed-section-card .highlight-text {
+            color: var(--dynamic-page-accent-2); 
+            font-weight: 600;
+            transition: color 0.5s ease;
+        }
+        .themed-section-card p, .themed-section-card li, 
+        .themed-section-card .opacity-80, 
+        .themed-section-card .opacity-90, 
+        .themed-section-card .opacity-70 {
+             color: var(--dynamic-page-text-color); 
+             opacity: 0.85; 
+             transition: color 0.5s ease, opacity 0.5s ease;
+        }
+        .themed-section-card .text-sm.opacity-80 { opacity: 0.8; }
+        .themed-section-card .text-xs.opacity-70 { opacity: 0.7; }
+
+        .studio-card { 
+            background-color: var(--dynamic-page-bg-color); 
+            color: var(--dynamic-page-text-color); 
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb), 0.2); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.5s ease, color 0.5s ease;
+            cursor: pointer;
+            overflow: hidden; 
+            border-radius: 0.75rem; 
+        }
+        .studio-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15), 0 0 20px var(--dynamic-page-accent-1-transparent);
+            border-color: var(--dynamic-page-accent-1-transparent);
+        }
+        .studio-card.active {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 0 0 3px var(--dynamic-page-accent-1), 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--dynamic-page-accent-1);
+        }
+        .studio-card img.studio-image {
+            transition: transform 0.4s ease;
+        }
+        .studio-card:hover img.studio-image {
+            transform: scale(1.05);
+        }
+        .studio-card h3 { color: var(--dynamic-page-text-color); opacity: 0.95; transition: color 0.5s ease, opacity 0.5s ease;}
+        .studio-card .card-internal-label { color: var(--dynamic-page-text-color); opacity:0.6; font-weight:500; transition: color 0.5s ease, opacity 0.5s ease;}
+        .studio-card .usage-label { color: var(--dynamic-page-text-color); opacity:0.8; font-weight:600; transition: color 0.5s ease, opacity 0.5s ease;}
+        .studio-card .color-name { color: var(--dynamic-page-text-color); opacity:0.6; font-size:0.7rem; transition: color 0.5s ease, opacity 0.5s ease;}
+        .studio-card .border-gray-700 { border-color: rgba(var(--dynamic-page-text-color-rgb), 0.2); transition: border-color 0.5s ease;}
+        
+        .thinglink-swatch-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem; 
+        }
+        .thinglink-swatch { 
+            width: 24px; 
+            height: 24px;
+            border-radius: 4px; 
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb), 0.3); 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .brand-color-swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: 0.375rem; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem; 
+            font-weight: 500;
+            padding: 0.25rem;
+            text-align: center;
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb),0.2); 
+            transition: border-color 0.5s ease;
+        }
+
+        .example-button {
+            padding: 0.375rem 0.75rem; 
+            border-radius: 0.375rem; 
+            font-size: 0.75rem; 
+            font-weight: 500;
+            text-align: center;
+            display: inline-block;
+            margin-top: 4px;
+            border: 1px solid transparent;
+        }
+
+        .decorative-line {
+            height: 3px;
+            background-image: linear-gradient(to right, var(--dynamic-page-accent-1), var(--dynamic-page-accent-2));
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 3px;
+            transition: background-image 0.5s ease;
+        }
+        .font-character-set {
+            font-size: 1.5rem; 
+            line-height: 1.8;
+            word-break: break-all;
+            text-align: center;
+            background-color: transparent; 
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb), 0.15); 
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: var(--dynamic-page-text-color); 
+            opacity: 0.8;
+             transition: color 0.5s ease, border-color 0.5s ease;
+        }
+        .font-style-button {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb), 0.3);
+            color: var(--dynamic-page-text-color);
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
+        .font-style-button.active {
+            background-color: var(--dynamic-page-accent-2);
+            color: var(--dynamic-text-on-accent-2);
+            opacity: 1;
+            border-color: transparent;
+        }
+        .font-style-example-text {
+            font-size: 1.25rem;
+            padding: 0.5rem 0;
+            color: var(--dynamic-page-text-color);
+            opacity: 0.9;
+            transition: color 0.5s ease, opacity 0.5s ease;
+        }
+
+
+        .bebas-font-display { 
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+            padding: 0.5rem;
+            background-color: rgba(var(--dynamic-page-text-color-rgb), 0.05); 
+            border-radius: 0.375rem;
+            color: var(--dynamic-page-text-color); 
+             opacity: 0.9;
+        }
+        .bebas-font-display .opacity-70 { opacity: 0.7; }
+
+
+        .icon-display-card { 
+            background-color: var(--dynamic-page-bg-color); 
+            color: var(--dynamic-page-text-color); 
+            border: 1px solid rgba(var(--dynamic-page-text-color-rgb), 0.2); 
+            border-radius: 0.75rem; 
+            padding: 1rem; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer; 
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        }
+        .icon-display-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .icon-display-card img { 
+            width: 80px; 
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 0.75rem; 
+            border-radius: 0.375rem; 
+            background-color: rgba(var(--dynamic-page-text-color-rgb), 0.05); 
+            opacity: 0.9;
+            padding: 0.25rem;
+            transition: background-color 0.5s ease;
+        }
+        .icon-display-card h4 { 
+            font-size: 0.875rem; 
+            font-weight: 600;
+            color: var(--dynamic-page-text-color); 
+            opacity: 0.95; 
+            margin-bottom: 0.25rem;
+            transition: color 0.5s ease, opacity 0.5s ease;
+        }
+        .icon-display-card p { 
+            font-size: 0.75rem; 
+            color: var(--dynamic-page-text-color); 
+            opacity: 0.7; 
+            line-height: 1.5;
+            transition: color 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .thinglink-specifics { 
+            background-color: rgba(var(--dynamic-page-accent-1-rgb, 247,92,3), 0.08); 
+            border-left: 3px solid var(--dynamic-page-accent-1);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.25rem 0.5rem 0.5rem 0.25rem;
+            transition: background-color 0.5s ease, border-left-color 0.5s ease;
+        }
+        .thinglink-specifics h4 { color: var(--dynamic-page-accent-1); transition: color 0.5s ease;}
+        
+                 
+         .internal-border { 
+            border-color: var(--dynamic-page-accent-1) !important; 
+            opacity: 0.3 !important; 
+            transition: border-color 0.5s ease;
+         }
+         /* Modal Styles */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content { 
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            background-color: #1f2937; 
+            color: #e5e7eb; 
+        }
+        .modal-content h3#modal-project-icon-title { 
+             color: var(--dynamic-page-accent-1); 
+        }
+         .modal-content p#modal-project-icon-motivation { 
+             color: #d1d5db; 
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="main-container" class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+
+        <header class="text-center mb-12 sm:mb-16">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
+                <span class="block section-title">MOODBOARD ARCHIVI DIGITALI INTERATTIVI</span>
+                <span class="block text-2xl sm:text-3xl opacity-70 mt-2 font-normal">palette colori studi d'artista & icone Thinglink</span>
+            </h1>
+            <div class="decorative-line w-32 mx-auto mt-4"></div>
+        </header>
+
+        <section class="mb-12 sm:mb-16 max-w-3xl mx-auto text-center themed-section-card p-6 sm:p-8 rounded-xl shadow-xl">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-4 section-title">Introduzione Concettuale</h2>
+            <p class="text-base sm:text-lg leading-relaxed">
+                Questa presentazione è un'esplorazione visiva degli elementi chiave del progetto "Infiniti Mondi": gli studi d'artista e le icone di navigazione. Ogni elemento è valorizzato da una specifica combinazione di colori d'accento, dimostrando la versatilità della palette "madre" e creando un tema cromatico unico per ogni contesto.
+            </p>
+        </section>
+        
+        <section id="brand-identity-section" class="mb-12 sm:mb-16 themed-section-card p-6 sm:p-8 rounded-xl shadow-xl">
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-8 text-center section-title">Identità Ufficiale Infiniti Mondi</h2>
+            <div class="decorative-line w-24 mx-auto mb-10"></div>
+
+            <div class="mb-10">
+                <h3 class="text-2xl sm:text-3xl font-semibold mb-6 highlight-text text-center">Tipografia Ufficiale</h3>
+                <div class="text-center mb-6">
+                    <p class="font-bebas text-5xl sm:text-6xl">BEBAS NEUE</p>
+                    <p class="text-sm opacity-80 mt-1">Font primario del brand "Infiniti Mondi"</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 items-center mb-6">
+                    <div class="bebas-font-display">
+                        <p class="text-4xl font-bold text-center">INFINITI MONDI</p>
+                        <p class="text-center text-xs opacity-70 mt-1">(Bebas Neue Bold)</p>
+                    </div>
+                    <div class="bebas-font-display">
+                        <p class="text-2xl text-center">NAPOLI INNOVATION CITY</p>
+                        <p class="text-center text-xs opacity-70 mt-1">(Bebas Neue Regular)</p>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed opacity-90 mb-2"><strong class="font-medium">Motivazione (dal Brand Manual):</strong> "Scelta per la similitudine con le forme nette e geometriche e la verticalità del segno progettato."</p>
+                <div class="font-bebas text-2xl p-4 bg-black/20 rounded-md text-center opacity-80 break-all">
+                    <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+                    <p>0123456789</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-2xl sm:text-3xl font-semibold mb-6 highlight-text text-center">Palette Colori "Madre" Ufficiale</h3>
+                <p class="text-center text-sm leading-relaxed opacity-90 mb-6 max-w-2xl mx-auto">"La palette è composta da colori brillanti, noti per la loro capacità di catturare immediatamente l'attenzione. [...] Simboleggiando avanguardia, evoluzione e sperimentazione, genera un marchio unico e riconoscibile."</p>
+                
+                <div class="mb-8">
+                    <h4 class="text-lg sm:text-xl font-semibold mb-3 text-center opacity-90">Colori Principali</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="brand-color-swatch" style="background-color: #27233A; color: #FFFFFF;">Pantone 276 C<br>(#27233A)</div>
+                        <div class="brand-color-swatch" style="background-color: #5104AE; color: #FFFFFF;">Pantone Violet C<br>(#5104AE)</div>
+                        <div class="brand-color-swatch" style="background-color: #F75C03; color: #000000;">Pantone Orange 021 C<br>(#F75C03)</div>
+                    </div>
+                     <p class="text-xs text-center mt-2 opacity-70">"Dei principali fanno parte colori più versatili e utilizzabili, poiché garantiscono contrasto..."</p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg sm:text-xl font-semibold mb-3 text-center opacity-90">Colori Secondari (Accenti)</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="brand-color-swatch" style="background-color: #009CDF; color: #FFFFFF;">Pantone Process Blue C<br>(#009CDF)</div>
+                        <div class="brand-color-swatch" style="background-color: #DA0093; color: #FFFFFF;">Pantone Rhodamine Red C<br>(#DA0093)</div>
+                        <div class="brand-color-swatch" style="background-color: #D4FC00; color: #000000;">Pantone 389 C<br>(#D4FC00)</div>
+                    </div>
+                    <p class="text-xs text-center mt-2 opacity-70">"...i secondari, meno utilizzabili a causa della loro saturazione, ma capaci di trasmettere energia, dinamismo e innovazione."</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="mb-12 sm:mb-16 themed-section-card p-6 sm:p-8 rounded-xl shadow-xl">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-6 text-center section-title">Filosofia del Design</h2>
+            <div class="decorative-line w-24 mx-auto mb-8"></div>
+            <div class="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-3 highlight-text">Tipografia Pagina: Montserrat</h3>
+                    <p class="mb-1 text-sm opacity-80">Descrizione:</p>
+                    <p class="mb-3 leading-relaxed">
+                        Sans-serif geometrico, pulito, moderno, noto per la sua eccellente leggibilità e versatilità.
+                    </p>
+                    <p class="mb-1 text-sm opacity-80">Motivazione della Scelta:</p>
+                    <p class="leading-relaxed mb-4">
+                        Scelto per chiara leggibilità, estetica contemporanea e funzionalità per titoli e testi brevi.
+                    </p>
+                    <p class="mb-1 text-sm opacity-80">Set di Caratteri Esempificativo (Montserrat Regular):</p>
+                    <div class="font-character-set">
+                        <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+                        <p>abcdefghijklmnopqrstuvwxyz</p>
+                        <p>0123456789</p>
+                        <p>!@#$%^&*()_+-=[]{}|;':",./<>?</p>
+                    </div>
+                    <div class="mt-4">
+                        <p class="mb-1 text-sm opacity-80">Stili Interattivi:</p>
+                        <div class="flex items-center">
+                            <p id="montserrat-style-example" class="font-style-example-text mr-4">L'innovazione plasma il futuro.</p>
+                            <button id="montserrat-bold-toggle" class="font-style-button"><strong>B</strong></button>
+                            <button id="montserrat-italic-toggle" class="font-style-button"><em>I</em></button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-semibold mb-3 highlight-text">Palette Colori & Applicazioni ThingLink</h3>
+                     <p class="mb-3 leading-relaxed opacity-80">
+                        Clicca sugli studi d'artista per vedere l'anteprima della palette colori.
+                    </p>
+                    <p class="mb-3 leading-relaxed opacity-80"><strong class="font-medium">Motivazione Scelta Colori per ThingLink:</strong> La selezione dei colori per gli elementi ThingLink di ogni studio è informata da un'analisi (idealmente assistita da IA come Gemini) delle immagini degli studi stessi. L'obiettivo è catturare l'atmosfera unica di ciascuno spazio, valorizzare la narrazione e garantire sempre un'ottima leggibilità e funzionalità degli elementi interattivi (hotspot, sfondi, pulsanti), creando un'esperienza immersiva e coerente.</p>
+                                     
+                    <div class="thinglink-specifics">
+                        <h4 class="text-lg font-semibold mb-2">Colori per Popup ThingLink (Guida Generale):</h4>
+                        <p class="text-sm mb-1"><strong class="opacity-80">Sfondo Popup:</strong> Il 1° colore della palette ThingLink dello studio.</p>
+                        <p class="text-xs opacity-70 mb-2">Definisce l'atmosfera del popup.</p>
+                        <p class="text-sm mb-1"><strong class="opacity-80">Testo Principale Popup:</strong> Calcolato per contrasto (Bianco/Nero).</p>
+                        <p class="text-xs opacity-70 mb-2">Massima leggibilità per la narrazione.</p>
+                        <p class="text-sm mb-1"><strong class="opacity-80">Sfondo Pulsante:</strong> Il 2° colore della palette ThingLink dello studio.</p>
+                        <p class="text-xs opacity-70 mb-2">Per call-to-action chiare.</p>
+                        <p class="text-sm mb-1"><strong class="opacity-80">Testo Pulsante:</strong> Calcolato per contrasto con lo sfondo del pulsante.</p>
+                        </div>
+                </div>
+            </div>
+             <div class="mt-8 pt-6 border-t internal-border">
+                <h3 class="text-xl sm:text-2xl font-semibold mb-3 text-center highlight-text">Interattività: Cambio Tema Immersivo</h3>
+                <p class="leading-relaxed text-center max-w-2xl mx-auto">
+                    Selezionando uno studio dalla galleria, l'intera pagina (sfondo, testo, accenti) si adatterà ai colori proposti per gli elementi ThingLink di quello studio. Le sezioni tematiche si fonderanno con lo sfondo.
+                </p>
+            </div>
+        </section>
+
+        <section class="mb-12 sm:mb-16 themed-section-card p-6 sm:p-8 rounded-xl shadow-xl">
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-8 text-center section-title">Galleria Interattiva Studi d'Artista</h2>
+            <div id="studios-gallery" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                </div>
+        </section>
+
+        <section id="project-icons-section" class="mb-12 sm:mb-16 themed-section-card p-6 sm:p-8 rounded-xl shadow-xl">
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-8 text-center section-title">Icone del Progetto</h2>
+            <div class="decorative-line w-24 mx-auto mb-8"></div>
+            <p class="text-center text-sm leading-relaxed opacity-90 mb-6 max-w-2xl mx-auto">
+                Le icone, sia in versione 3D che 2D, sono state ideate (potenzialmente con l'ausilio di IA come Gemini) per adottare uno stile "pop": moderno, vivace e accessibile. I colori brillanti e le silhouette morbide sono scelti per catturare l'attenzione, trasmettere energia positiva e rendere la navigazione del virtual tour intuitiva. Questo stile distintivo contribuisce a un'identità visiva fresca e memorabile, funzionale a guidare l'utente nell'esplorazione delle storie e degli archivi digitali, in linea con lo spirito innovativo di "Infiniti Mondi".
+            </p>
+
+            <div>
+                <h3 class="text-xl sm:text-2xl font-semibold mb-6 highlight-text text-center">Icone 3D (Stile Pop)</h3>
+                <div id="icons-3d-gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+                    </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t internal-border">
+                <h3 class="text-xl sm:text-2xl font-semibold mb-6 highlight-text text-center">Icone 2D (Stile Pop)</h3>
+                <div id="icons-2d-gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+                    </div>
+            </div>
+        </section>
+        
+        <div id="project-icon-detail-modal" class="modal-overlay fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0">
+            <div class="modal-content p-6 rounded-xl shadow-2xl w-full max-w-md transform scale-95 border border-gray-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-project-icon-title" class="text-xl font-semibold"></h3>
+                    <button id="close-project-icon-modal" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+                </div>
+                <div class="text-center mb-4">
+                    <img id="modal-project-icon-image" src="" alt="Icona del Progetto Ingrandita" class="max-w-xs mx-auto max-h-48 object-contain rounded-lg bg-gray-700 p-2">
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold mb-1">Motivazione / Utilizzo:</h4>
+                    <p id="modal-project-icon-motivation" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        const studiosData = [
+            {
+                id: 'matarese',
+                name: "Studio Matarese",
+                imageSrc: "studio_artista_Matarese.png", 
+                thingLinkPantones: [ 
+                    { name: "Pantone 7530 C", hex: "#C9BBAA", usage: "Sfondo Popup" },
+                    { name: "Pantone 7731 C", hex: "#4A5D52", usage: "Sfondo Pulsante / Accento Primario" }
+                ]
+            },
+            {
+                id: 'persico',
+                name: "Studio Persico",
+                imageSrc: "studio_artista_persico.png", 
+                thingLinkPantones: [
+                    { name: "Pantone Cool Gray 9 C", hex: "#75787B", usage: "Sfondo Popup" },
+                    { name: "Pantone 1375 C", hex: "#FFA726", usage: "Sfondo Pulsante / Accento Primario" }
+                ]
+            },
+            {
+                id: 'pirozzi',
+                name: "Studio Pirozzi",
+                imageSrc: "studio_artista_pirozzi.png", 
+                thingLinkPantones: [
+                    { name: "Pantone Warm Gray 5 C", hex: "#A89F96", usage: "Sfondo Popup" },
+                    { name: "Pantone 7526 C", hex: "#5A463A", usage: "Sfondo Pulsante / Accento Primario" }
+                ]
+            },
+            {
+                id: 'starita',
+                name: "Studio Starita",
+                imageSrc: "studio_artista_starita.png", 
+                thingLinkPantones: [
+                    { name: "Pantone 5513 C", hex: "#A2AD9C", usage: "Sfondo Popup" },
+                    { name: "Pantone 7541 C", hex: "#C1D5E0", usage: "Sfondo Pulsante / Accento Primario" }
+                ]
+            }
+        ];
+
+         const iconsData3D = [
+            { id: 'video3d', imageSrc: 'video3d@4x.png', title: 'Video Locale 3D', motivation: 'Pulsante per riprodurre video archiviati localmente, integrati nel tour.' },
+            { id: 'tour3d', imageSrc: 'tour3d@4x.png', title: 'Navigazione 360° 3D', motivation: 'Indica un hotspot per spostarsi in un altro punto panoramico della stanza.' },
+            { id: 'immagini3d', imageSrc: 'immagini3d@4x.png', title: 'Galleria Foto Artista 3D', motivation: 'Apre una lista o una galleria di fotografie relative all\'artista o al suo lavoro.' },
+            { id: 'txt3d', imageSrc: 'txt3d@4x.png', title: 'Testo Informativo 3D', motivation: 'Visualizza un popup contenente solo testo descrittivo o narrativo.' },
+            { id: 'modello3d_3d', imageSrc: 'modello3d_3d@4x.png', title: 'Render 3D Opera', motivation: 'Apre un popup con un render 3D dell\'opera, visualizzabile a 360 gradi.' },
+            { id: 'link3d', imageSrc: 'link3d@4x.png', title: 'Link Esterno 3D', motivation: 'Reindirizza l\'utente a un sito web esterno per ulteriori informazioni.' }
+        ];
+
+        const iconsData2D = [
+            { id: 'video_locale_2d', imageSrc: 'video2d@4x.png', title: 'Video Locale 2D', motivation: 'Pulsante per riprodurre video archiviati localmente, integrati nel tour.' },
+            { id: 'tour_2d', imageSrc: 'tour2d@4x.png', title: 'Navigazione 360° 2D', motivation: 'Indica un hotspot per spostarsi in un altro punto panoramico della stanza.' },
+            { id: 'galleria_2d', imageSrc: 'immagini2d@4x.png', title: 'Galleria Immagini 2D', motivation: 'Apre una lista o una galleria di fotografie relative all\'artista o al suo lavoro.' },
+            { id: 'documento_2d', imageSrc: 'txt2d@4x.png', title: 'Testo Informativo 2D', motivation: 'Visualizza un popup contenente solo testo descrittivo o narrativo.' },
+            { id: 'modello_3d_2d', imageSrc: 'modello3d_2d@4x.png', title: 'Render 3D Opera 2D', motivation: 'Apre un popup con un render 3D dell\'opera, visualizzabile a 360 gradi.' },
+            { id: 'link_2d', imageSrc: 'link2d@4x.png', title: 'Link Esterno 2D', motivation: 'Reindirizza l\'utente a un sito web esterno per ulteriori informazioni.' }
+        ];
+
+
+        const galleryContainer = document.getElementById('studios-gallery');
+        const icons3DContainer = document.getElementById('icons-3d-gallery');
+        const icons2DContainer = document.getElementById('icons-2d-gallery');
+        
+        const projectIconModal = document.getElementById('project-icon-detail-modal');
+        const modalProjectIconTitle = document.getElementById('modal-project-icon-title');
+        const modalProjectIconImage = document.getElementById('modal-project-icon-image');
+        const modalProjectIconMotivation = document.getElementById('modal-project-icon-motivation');
+        const closeProjectIconModalButton = document.getElementById('close-project-icon-modal');
+
+        const montserratExampleText = document.getElementById('montserrat-style-example');
+        const boldToggleButton = document.getElementById('montserrat-bold-toggle');
+        const italicToggleButton = document.getElementById('montserrat-italic-toggle');
+        let isMontserratBold = false;
+        let isMontserratItalic = false;
+
+        let activeCard = null;
+
+        const defaultPageTheme = {
+            pageBgColor: "#F8F9FA", 
+            pageTextColor: "#212529", 
+            accent1: "#F75C03",      
+            textOnAccent1: "#FFFFFF", 
+            accent2: "#009CDF",      
+            textOnAccent2: "#FFFFFF", 
+            sectionCardBorderColor: "#F75C03" 
+        };
+
+        function getContrastYIQ(hexcolor){
+            hexcolor = hexcolor.replace("#", "");
+            var r = parseInt(hexcolor.substr(0,2),16);
+            var g = parseInt(hexcolor.substr(2,2),16);
+            var b = parseInt(hexcolor.substr(4,2),16);
+            var yiq = ((r*299)+(g*587)+(b*114))/1000;
+            return (yiq >= 135) ? '#000000' : '#FFFFFF';
+        }
+
+        function applyThemeToPage(themeConfig) {
+            const hexToRgb = (hex) => {
+                hex = hex.replace("#", "");
+                const r = parseInt(hex.slice(0, 2), 16);
+                const g = parseInt(hex.slice(2, 4), 16);
+                const b = parseInt(hex.slice(4, 6), 16);
+                return `${r},${g},${b}`;
+            };
+
+            document.documentElement.style.setProperty('--dynamic-page-bg-color', themeConfig.pageBgColor);
+            document.documentElement.style.setProperty('--dynamic-page-text-color', themeConfig.pageTextColor);
+            
+            document.documentElement.style.setProperty('--dynamic-page-accent-1', themeConfig.accent1);
+            document.documentElement.style.setProperty('--dynamic-page-accent-2', themeConfig.accent2);
+            document.documentElement.style.setProperty('--dynamic-text-on-accent-1', themeConfig.textOnAccent1);
+            document.documentElement.style.setProperty('--dynamic-text-on-accent-2', themeConfig.textOnAccent2);
+            
+            document.documentElement.style.setProperty('--dynamic-page-accent-1-transparent', `${themeConfig.accent1}4D`);
+            document.documentElement.style.setProperty('--dynamic-page-accent-1-rgb', hexToRgb(themeConfig.accent1));
+            document.documentElement.style.setProperty('--dynamic-page-text-color-rgb', hexToRgb(themeConfig.pageTextColor));
+        }
+
+        function openProjectIconModal(iconData) {
+            modalProjectIconTitle.textContent = iconData.title;
+            modalProjectIconImage.src = iconData.imageSrc;
+            modalProjectIconImage.alt = `Icona ${iconData.title}`;
+            modalProjectIconMotivation.textContent = iconData.motivation;
+
+            projectIconModal.classList.remove('hidden');
+            setTimeout(() => {
+                projectIconModal.classList.add('opacity-100');
+                projectIconModal.querySelector('.modal-content').classList.remove('scale-95');
+                projectIconModal.querySelector('.modal-content').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeProjectIconModal() {
+            projectIconModal.classList.remove('opacity-100');
+            projectIconModal.querySelector('.modal-content').classList.add('scale-95');
+            projectIconModal.querySelector('.modal-content').classList.remove('scale-100');
+            setTimeout(() => projectIconModal.classList.add('hidden'), 300);
+        }
+        closeProjectIconModalButton.addEventListener('click', closeProjectIconModal);
+
+        function populateIconGallery(container, iconsData) {
+            container.innerHTML = ''; 
+            iconsData.forEach(icon => {
+                const iconCard = document.createElement('div');
+                iconCard.className = 'icon-display-card';
+                
+                const img = document.createElement('img');
+                img.src = icon.imageSrc;
+                img.alt = icon.title;
+                iconCard.appendChild(img);
+
+                const title = document.createElement('h4');
+                title.textContent = icon.title;
+                iconCard.appendChild(title);
+
+                const motivation = document.createElement('p');
+                motivation.textContent = icon.motivation;
+                iconCard.appendChild(motivation);
+
+                iconCard.addEventListener('click', () => openProjectIconModal(icon));
+                container.appendChild(iconCard);
+            });
+        }
+
+        studiosData.forEach(studio => {
+            const card = document.createElement('div');
+            card.className = 'studio-card p-5 rounded-xl shadow-xl flex flex-col text-sm';
+            card.dataset.studioId = studio.id;
+
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'w-full h-44 sm:h-52 object-cover rounded-lg mb-4 overflow-hidden shadow-md';
+            const image = document.createElement('img');
+            image.src = studio.imageSrc; 
+            image.alt = `Immagine ${studio.name}`;
+            image.className = 'w-full h-full object-cover studio-image'; 
+            imageWrapper.appendChild(image);
+            card.appendChild(imageWrapper);
+
+            const name = document.createElement('h3');
+            name.className = 'text-md sm:text-lg font-semibold mb-1.5'; 
+            name.textContent = studio.name;
+            card.appendChild(name);
+            
+            const thinglinkTitle = document.createElement('p');
+            thinglinkTitle.className = 'text-xs font-medium card-internal-label mb-2 mt-3 pt-2 border-t'; 
+            thinglinkTitle.textContent = 'Palette ThingLink Proposta:';
+            card.appendChild(thinglinkTitle);
+            
+            const thinglinkSwatchesList = document.createElement('ul');
+            thinglinkSwatchesList.className = 'space-y-3 text-xs flex-grow';
+
+            const tlColor1 = studio.thingLinkPantones[0];
+            const tlColor1Text = getContrastYIQ(tlColor1.hex);
+            thinglinkSwatchesList.innerHTML += `<li class="thinglink-swatch-container">
+                                <div class="thinglink-swatch" style="background-color: ${tlColor1.hex};"></div>
+                                <div class="thinglink-color-info">
+                                    <span class="usage-label">Sfondo Popup</span>
+                                    <span class="color-name">${tlColor1.name.replace("Pantone ", "")} (${tlColor1.hex})</span>
+                                    <span class="color-name">(Testo: ${tlColor1Text === '#000000' ? 'Nero' : 'Bianco'})</span>
+                                </div></li>`;
+
+            const tlColor2 = studio.thingLinkPantones[1];
+            const tlColor2Text = getContrastYIQ(tlColor2.hex);
+            thinglinkSwatchesList.innerHTML += `<li class="thinglink-swatch-container">
+                                <div class="thinglink-swatch" style="background-color: ${tlColor2.hex};"></div>
+                                <div class="thinglink-color-info">
+                                    <span class="usage-label">Sfondo Pulsante</span>
+                                    <span class="color-name">${tlColor2.name.replace("Pantone ", "")} (${tlColor2.hex})</span>
+                                    <div class="example-button" style="background-color: ${tlColor2.hex}; color: ${tlColor2Text}; border-color: ${getContrastYIQ(tlColor2Text)};">Testo Esempio</div>
+                                </div></li>`;
+            
+            card.appendChild(thinglinkSwatchesList);
+            
+            card.addEventListener('click', () => {
+                const studioTheme = {
+                    pageBgColor: studio.thingLinkPantones[0].hex,
+                    pageTextColor: getContrastYIQ(studio.thingLinkPantones[0].hex),
+                    accent1: studio.thingLinkPantones[1].hex,
+                    textOnAccent1: getContrastYIQ(studio.thingLinkPantones[1].hex),
+                    accent2: studio.thingLinkPantones[1].hex, 
+                    textOnAccent2: getContrastYIQ(studio.thingLinkPantones[1].hex),
+                    sectionCardBorderColor: studio.thingLinkPantones[1].hex 
+                };
+                applyThemeToPage(studioTheme);
+
+                if (activeCard) {
+                    activeCard.classList.remove('active');
+                }
+                card.classList.add('active');
+                activeCard = card;
+            });
+
+            galleryContainer.appendChild(card);
+        });
+
+        function updateMontserratExampleStyle() {
+            montserratExampleText.classList.remove('font-bold', 'italic');
+            if (isMontserratBold) {
+                montserratExampleText.classList.add('font-bold');
+            }
+            if (isMontserratItalic) {
+                montserratExampleText.classList.add('italic');
+            }
+            boldToggleButton.classList.toggle('active', isMontserratBold);
+            italicToggleButton.classList.toggle('active', isMontserratItalic);
+
+            const activeAccentColor = getComputedStyle(document.documentElement).getPropertyValue('--dynamic-page-accent-2').trim();
+            const activeTextColor = getComputedStyle(document.documentElement).getPropertyValue('--dynamic-text-on-accent-2').trim();
+            
+            document.querySelectorAll('.font-style-button.active').forEach(btn => {
+                btn.style.backgroundColor = activeAccentColor;
+                btn.style.color = activeTextColor;
+                btn.style.borderColor = 'transparent';
+            });
+             document.querySelectorAll('.font-style-button:not(.active)').forEach(btn => {
+                btn.style.backgroundColor = 'transparent';
+                btn.style.color = getComputedStyle(document.documentElement).getPropertyValue('--dynamic-page-text-color').trim();
+                btn.style.borderColor = `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--dynamic-page-text-color-rgb')}, 0.3)`;
+            });
+        }
+
+        boldToggleButton.addEventListener('click', () => {
+            isMontserratBold = !isMontserratBold;
+            updateMontserratExampleStyle();
+        });
+
+        italicToggleButton.addEventListener('click', () => {
+            isMontserratItalic = !isMontserratItalic;
+            updateMontserratExampleStyle();
+        });
+
+
+        applyThemeToPage(defaultPageTheme); 
+        updateMontserratExampleStyle(); 
+
+
+        populateIconGallery(icons3DContainer, iconsData3D);
+        populateIconGallery(icons2DContainer, iconsData2D);
+        
+        document.getElementById('main-container').addEventListener('click', function(event) {
+            const isStudioCard = event.target.closest('.studio-card');
+            const isProjectIconModal = event.target.closest('#project-icon-detail-modal');
+            const isProjectIconTrigger = event.target.closest('.icon-display-card');
+            const isFontStyleButton = event.target.closest('.font-style-button');
+
+
+            if (!isStudioCard && !isProjectIconModal && !isProjectIconTrigger && !isFontStyleButton) {
+                applyThemeToPage(defaultPageTheme);
+                if (activeCard) {
+                    activeCard.classList.remove('active');
+                    activeCard = null;
+                }
+            }
+        });
+        
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !projectIconModal.classList.contains('hidden')) {
+                closeProjectIconModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
